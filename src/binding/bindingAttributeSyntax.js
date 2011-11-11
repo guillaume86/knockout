@@ -1,8 +1,9 @@
 (function () {
     ko.bindingHandlers = {};
 
-    ko.bindingContext = function(dataItem, parentBindingContext) {
+    ko.bindingContext = function(dataItem, parentBindingContext, index) {
         this['$data'] = dataItem;
+        this['$index'] = index;
         if (parentBindingContext) {
             this['$parent'] = parentBindingContext['$data'];
             this['$parents'] = (parentBindingContext['$parents'] || []).slice(0);
@@ -13,8 +14,8 @@
             this['$root'] = dataItem;        	
         }
     }
-    ko.bindingContext.prototype['createChildContext'] = function (dataItem) {
-        return new ko.bindingContext(dataItem, this);
+    ko.bindingContext.prototype['createChildContext'] = function (dataItem, index) {
+        return new ko.bindingContext(dataItem, this, index);
     };
 
     function validateThatBindingIsAllowedForVirtualElements(bindingName) {
